@@ -54,13 +54,13 @@ export default function Cadastro() {
       className="mb-28 h-auto w-[460px] object-contain"
     />
   </div>
-  <div className="relative mt-4 h-[750px] w-[450px] shrink-0 overflow-hidden">
+  <div className="relative mt-2 h-[800px] w-[500px] shrink-0 overflow-hidden">
     <Image
       src="/StockLee - Mascote da Stock.io.png"
       alt="StockLee - Mascote da Stock.io"
       fill
       priority
-      sizes="750px"
+      sizes="800px"
       className="object-cover object-top"
     />
         </div>
