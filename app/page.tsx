@@ -1,69 +1,71 @@
-import Image from "next/image";
+import Image from 'next/image';
 
-export default function Home() {
+export default function Cadastro() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <main className="min-h-screen w-full bg-orange-50 px-6 pb-0 pt-10 md:px-14 md:pt-10">
+
+      <div className="mt-4 mx-auto grid w-full max-w-[1450px] grid-cols-1 items-start gap-8 md:grid-cols-[750px_minmax(0,1fr)] md:gap-[100px]">
+        <section className="min-h-[700px] w-full rounded-[28px] bg-black px-[55px] pt-[55px] text-white">
+
+          <h1 className="mb-6 whitespace-nowrap text-center text-xl font-extrabold">
+            CRIE SUA CONTA
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <form className="flex flex-col gap-2">
+
+            <input type="text" placeholder="Nome Completo"
+              className="h-12 w-full rounded-full bg-white px-5 text-base text-black outline-none focus:ring-2 focus:ring-purple-500" />
+
+            <input type="text" placeholder="Username"
+              className="h-12 w-full rounded-full bg-white px-5 text-base text-black outline-none focus:ring-2 focus:ring-purple-500" />
+
+            <input type="email" placeholder="Email"
+              className="h-12 w-full rounded-full bg-white px-5 text-base text-black outline-none focus:ring-2 focus:ring-purple-500" />
+
+            <input type="password" placeholder="Senha"
+              className="h-12 w-full rounded-full bg-white px-5 text-base text-black outline-none focus:ring-2 focus:ring-purple-500" />
+
+            <input type="password" placeholder="Confirmar Senha"
+              className="h-12 w-full rounded-full bg-white px-5 text-base text-black outline-none focus:ring-2 focus:ring-purple-500" />
+
+            <button type="submit"
+              className="mt-4 h-12 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700">
+              CRIAR CONTA
+            </button>
+
+          </form>
+
+          <p className="mt-4 whitespace-nowrap text-[15px] text-gray-300">
+            Já possui uma conta?
+            <a href="/login" className="font-bold text-purple-500 hover:text-purple-600">
+              Login
+            </a>
           </p>
+        </section>
+        
+<section className="flex h-full min-w-0 flex-col items-center md:-ml-1">
+  <div className="flex h-[100px] w-full items-center justify-center">
+    <Image
+      src="/LOGO Stock.io.png"
+      alt="Logo Stock.io"
+      width={460}
+      height={150}
+      priority
+      className="mb-28 h-auto w-[460px] object-contain"
+    />
+  </div>
+  <div className="relative mt-4 h-[750px] w-[450px] shrink-0 overflow-hidden">
+    <Image
+      src="/StockLee - Mascote da Stock.io.png"
+      alt="StockLee - Mascote da Stock.io"
+      fill
+      priority
+      sizes="750px"
+      className="object-cover object-top"
+    />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+       </section>
+      </div>
+     </main>
   );
 }
