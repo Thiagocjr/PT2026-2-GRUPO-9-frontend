@@ -5,6 +5,10 @@ export interface LoginDto {
     password: string;
 }
 
+export interface ForgotPasswordDto {
+    email: string;
+}
+
 export async function loginUser(data: LoginDto) {
     try {
         const response = await api.post('/auth/login', data);
@@ -19,3 +23,4 @@ export async function loginUser(data: LoginDto) {
         throw error.response?.data || {message: 'Email ou senha incorretos'};
     }
 }
+
