@@ -24,3 +24,13 @@ export async function loginUser(data: LoginDto) {
     }
 }
 
+export async function requestForgotPassword(data: ForgotPasswordDto) {
+  try {
+    const response = await api.post('/auth/forgot-password', data);
+    return response.data;
+  } 
+    catch (error: any) {
+    throw error.response?.data || { message: 'Erro ao solicitar recuperação de senha' };
+  }
+}
+
