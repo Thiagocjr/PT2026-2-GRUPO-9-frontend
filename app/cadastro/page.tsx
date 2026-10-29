@@ -27,9 +27,28 @@ export default function Cadastro() {
     }
 
     setMensagemErro('');
+    setLoading(true);
     console.log({ nome, username, email });
-  }
+  
+    try {
+      
+      await registerUser({
+        name: nome,
+        username: username,
+        email: email,
+        password: senha,
+        passwordConfirmation: confirmarSenha
+    });
 
+    alert('Cadastro realizado com sucesso! Faça login para continuar.');
+    router.push('/login');
+    
+  } catch (error: any) {
+    setMensagemErro(error.message);
+  } finally {
+    setLoading(false);
+  }
+}
   return (
     <main className="min-h-screen w-full bg-[#F6F3E4] px-4 py-8 sm:px-6 lg:h-screen lg:overflow-y-auto lg:px-14 lg:pb-0 lg:pt-0">
       <div className="mx-auto grid w-full max-w-[1450px] grid-cols-2 items-start gap-6 lg:h-full lg:grid-cols-[minmax(0,680px)_480px] lg:justify-center lg:gap-36">
