@@ -41,3 +41,12 @@ export interface RegisterDto {
     password: string;
     passwordConfirmation: string;
 }
+
+export async function registerUser(data: RegisterDto) {
+    try {
+        const response = await api.post('/auth/register', data);
+        return response.data;
+    } catch (error: any) {
+        throw error.response?.data || { message: 'Erro ao registrar usuário' };
+    }
+}
