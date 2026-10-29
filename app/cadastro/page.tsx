@@ -42,7 +42,7 @@ export default function Cadastro() {
 
     alert('Cadastro realizado com sucesso! Faça login para continuar.');
     router.push('/login');
-    
+
   } catch (error: any) {
     setMensagemErro(error.message);
   } finally {
@@ -124,9 +124,10 @@ export default function Cadastro() {
 
             <button
               type="submit"
-              className="mt-2 h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700"
+              disabled={loading}
+              className="mt-2 h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              CRIAR CONTA
+              {loading ? 'CADASTRANDO...' : 'CRIAR CONTA'}
             </button>
           </form>
 
