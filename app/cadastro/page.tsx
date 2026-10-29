@@ -18,7 +18,7 @@ export default function Cadastro() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (senha !== confirmarSenha) {
