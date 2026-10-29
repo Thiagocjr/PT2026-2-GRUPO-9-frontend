@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
+import { loginUser } from '@/src/services/authService';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -15,6 +17,20 @@ export default function Login() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log({ email, senha });
+
+    try {
+      await loginUser({
+        email,
+        password: senha,
+      })
+
+      router.push('/telaInicialLogado');
+
+    } catch (error:any) {
+      setErrorMessage(error.message || 'Erro ao fazer login. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <main className="min-h-screen w-full bg-[#F6F3E4] px-4 py-8 sm:px-6 lg:h-screen lg:overflow-y-auto lg:px-14 lg:pb-0 lg:pt-0">
