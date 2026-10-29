@@ -63,6 +63,12 @@ export default function Login() {
           </h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            {errorMessage && (
+              <div className="rounded-2xl bg-red-500/20 p-4 text-center text-sm font-medium text-red-300 border border-red-500/30">
+                {errorMessage}
+              </div>
+            )}
+            
             <input
               type="email"
               placeholder="Email"
