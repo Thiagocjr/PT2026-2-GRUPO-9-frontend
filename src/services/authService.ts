@@ -34,3 +34,10 @@ export async function requestForgotPassword(data: ForgotPasswordDto) {
   }
 }
 
+export interface RegisterDto {
+    name: string;
+    username: string;
+    email: string;
+    password: string;
+    passwordConfirmation: string;
+}
