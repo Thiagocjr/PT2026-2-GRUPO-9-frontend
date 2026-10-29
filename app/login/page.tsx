@@ -9,6 +9,9 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
