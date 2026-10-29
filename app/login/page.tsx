@@ -8,6 +8,7 @@ import { loginUser } from '@/src/services/authService';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
