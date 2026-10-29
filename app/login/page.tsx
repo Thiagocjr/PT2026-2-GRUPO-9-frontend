@@ -112,7 +112,7 @@ export default function Login() {
 
             <button
               type="submit" disabled={loading}
-              className="h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700"
+              className="h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'CARREGANDO...' : 'ENTRAR'}
             </button>
