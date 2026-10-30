@@ -1,0 +1,52 @@
+import { api } from './api';
+
+export interface LoginDto {
+    email: string;
+    password: string;
+}
+
+export interface ForgotPasswordDto {
+    email: string;
+}
+
+export async function loginUser(data: LoginDto) {
+    try {
+        const response = await api.post('/auth/login', data);
+        
+        if (response.data.acessToken) {
+            localStorage.setItem('@App:token', response.data.acessToken);
+        }
+        return response.data;
+    
+    }
+    catch (error: any) {
+        throw error.response?.data || {message: 'Email ou senha incorretos'};
+    }
+}
+
+export async function requestForgotPassword(data: ForgotPasswordDto) {
+  try {
+    const response = await api.post('/auth/forgot-password', data);
+    return response.data;
+  } 
+    catch (error: any) {
+    throw error.response?.data || { message: 'Erro ao solicitar recuperação de senha' };
+  }
+}
+
+export interface RegisterDto {
+    name: string;
+    username: string;
+    email: string;
+    password: string;
+    passwordConfirmation: string;
+}
+
+export async function registerUser(data: RegisterDto) {
+    try {
+        const response = await api.post('/auth/register', data);
+        return response.data;
+    } catch (error: any) {
+        throw error.response?.data || { message: 'Erro ao registrar usuário' };
+    }
+}

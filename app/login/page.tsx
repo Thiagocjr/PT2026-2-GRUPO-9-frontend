@@ -4,15 +4,34 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
+import { loginUser } from '@/src/services/authService';
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log({ email, senha });
+
+    try {
+      await loginUser({
+        email,
+        password: senha,
+      })
+
+      router.push('/telaInicialLogado');
+
+    } catch (error:any) {
+      setErrorMessage(error.message || 'Erro ao fazer login. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <main className="min-h-screen w-full bg-[#F6F3E4] px-4 py-8 sm:px-6 lg:h-screen lg:overflow-y-auto lg:px-14 lg:pb-0 lg:pt-0">
@@ -45,6 +64,12 @@ export default function Login() {
           </h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            {errorMessage && (
+              <div className="rounded-2xl bg-red-500/20 p-4 text-center text-sm font-medium text-red-300 border border-red-500/30">
+                {errorMessage}
+              </div>
+            )}
+            
             <input
               type="email"
               placeholder="Email"
@@ -87,10 +112,10 @@ export default function Login() {
             </div>
 
             <button
-              type="submit"
-              className="h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700"
+              type="submit" disabled={loading}
+              className="h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              ENTRAR
+              {loading ? 'CARREGANDO...' : 'ENTRAR'}
             </button>
           </form>
 

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { registerUser } from '@/src/services/authService';
 
 export default function Cadastro() {
   const [nome, setNome] = useState('');
@@ -13,8 +15,11 @@ export default function Cadastro() {
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mensagemErro, setMensagemErro] = useState('');
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const [mensagemSucesso, setMensagemSucesso] = useState('');
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (senha !== confirmarSenha) {
@@ -23,9 +28,29 @@ export default function Cadastro() {
     }
 
     setMensagemErro('');
+    setLoading(true);
     console.log({ nome, username, email });
-  }
+  
+    try {
+      
+      await registerUser({
+        name: nome,
+        username: username,
+        email: email,
+        password: senha,
+        passwordConfirmation: confirmarSenha
+    });
 
+    setMensagemSucesso('Cadastro realizado com sucesso! Faça login para continuar.');
+    
+    setTimeout(() => router.push('/login'), 5000);
+
+  } catch (error: any) {
+    setMensagemErro(error.message);
+  } finally {
+    setLoading(false);
+  }
+}
   return (
     <main className="min-h-screen w-full bg-[#F6F3E4] px-4 py-8 sm:px-6 lg:h-screen lg:overflow-y-auto lg:px-14 lg:pb-0 lg:pt-0">
       <div className="mx-auto grid w-full max-w-[1450px] grid-cols-2 items-start gap-6 lg:h-full lg:grid-cols-[minmax(0,680px)_480px] lg:justify-center lg:gap-36">
@@ -98,12 +123,19 @@ export default function Cadastro() {
             {mensagemErro && (
               <p className="text-center text-sm text-red-400">{mensagemErro}</p>
             )}
-
+            
+            {mensagemSucesso && (
+              <div className="rounded-2xl bg-green-500/20 p-4 text-center text-sm font-medium text-green-300 border border-green-500/30">
+                {mensagemSucesso}
+              </div>
+            )}
+            
             <button
               type="submit"
-              className="mt-2 h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700"
+              disabled={loading}
+              className="mt-2 h-14 w-full rounded-full bg-purple-600 text-base font-bold text-white transition hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              CRIAR CONTA
+              {loading ? 'CADASTRANDO...' : 'CRIAR CONTA'}
             </button>
           </form>
 
