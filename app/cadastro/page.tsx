@@ -15,6 +15,7 @@ export default function Cadastro() {
   const [confirmarSenha, setConfirmarSenha] = useState('');
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mensagemErro, setMensagemErro] = useState('');
+  const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   
@@ -40,8 +41,9 @@ export default function Cadastro() {
         passwordConfirmation: confirmarSenha
     });
 
-    alert('Cadastro realizado com sucesso! Faça login para continuar.');
-    router.push('/login');
+    setMensagemSucesso('Cadastro realizado com sucesso! Faça login para continuar.');
+    
+    setTimeout(() => router.push('/login'), 5000);
 
   } catch (error: any) {
     setMensagemErro(error.message);
@@ -121,7 +123,13 @@ export default function Cadastro() {
             {mensagemErro && (
               <p className="text-center text-sm text-red-400">{mensagemErro}</p>
             )}
-
+            
+            {mensagemSucesso && (
+              <div className="rounded-2xl bg-green-500/20 p-4 text-center text-sm font-medium text-green-300 border border-green-500/30">
+                {mensagemSucesso}
+              </div>
+            )}
+            
             <button
               type="submit"
               disabled={loading}
