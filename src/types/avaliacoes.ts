@@ -14,6 +14,7 @@ export type RespostaAvaliacoesLoja = {
     id: number;
     name: string;
     bannerUrl: string | null;
+    ownerId: number;
   };
   ratings: AvaliacaoLoja[];
 };
