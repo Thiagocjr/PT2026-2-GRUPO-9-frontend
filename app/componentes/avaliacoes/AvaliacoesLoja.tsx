@@ -3,8 +3,11 @@
 import { useEffect, useState } from 'react';
 import Header from '../Header';
 import { listarAvaliacoesLoja } from '@/src/services/avaliacoesService';
+import { getCurrentUser } from '@/src/services/authService';
 import type { AvaliacaoLoja, RespostaAvaliacoesLoja } from '@/src/types/avaliacoes';
 import { League_Spartan } from 'next/font/google';
+import ControlesProprietario from './ControlesProprietario';
+import BotaoAdicionarReview from './BotaoAdicionarReview';
 
 const leagueSpartan = League_Spartan({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
@@ -31,27 +34,48 @@ function ReviewCard({ review }: { review: AvaliacaoLoja }) {
   </article>;
 }
 
+type SessionState =
+  | { status: 'checking' }
+  | { status: 'visitor' }
+  | { status: 'authenticated'; userId: number };
+
 export default function AvaliacoesLoja({ storeId }: { storeId: number }) {
   const [result, setResult] = useState<{ storeId: number; data: RespostaAvaliacoesLoja } | null>(null);
   const [failedStoreId, setFailedStoreId] = useState<number | null>(null);
+  const [session, setSession] = useState<SessionState>({ status: 'checking' });
   useEffect(() => {
     let active = true;
     listarAvaliacoesLoja(storeId).then((data) => { if (active) setResult({ storeId, data }); }).catch(() => { if (active) setFailedStoreId(storeId); });
     return () => { active = false; };
   }, [storeId]);
+  useEffect(() => {
+    let active = true;
+    const token = localStorage.getItem('@App:token');
+    Promise.resolve(token)
+      .then((storedToken) => storedToken ? getCurrentUser() : null)
+      .then((user) => {
+        if (active) setSession(user ? { status: 'authenticated', userId: user.id } : { status: 'visitor' });
+      })
+      .catch(() => { if (active) setSession({ status: 'visitor' }); });
+    return () => { active = false; };
+  }, []);
   const data = result?.storeId === storeId ? result.data : null;
   const error = failedStoreId === storeId;
   const store = data?.store;
   const reviews = data?.ratings;
+  const authenticated = session.status === 'authenticated';
+  const isOwner = authenticated && store !== undefined && session.userId === store.ownerId;
   const average = reviews?.length ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : 0;
   return <main className={`${leagueSpartan.className} min-h-screen bg-black text-white`}>
-    <Header variant="guest" />
+    <Header variant={authenticated ? 'authenticated' : 'guest'} />
     <section className="relative flex h-[539px] items-center justify-center overflow-hidden bg-[#171717] bg-cover bg-center" style={store?.bannerUrl ? { backgroundImage: `linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.48)),url(${store.bannerUrl})` } : undefined}>
+      {isOwner && <ControlesProprietario />}
       {store?.name && <h1 className="px-5 text-center text-5xl font-light sm:text-7xl">{store.name}</h1>}
     </section>
     <section className="mx-auto min-h-[1845px] max-w-[1440px] px-5 pb-20 pt-12 sm:px-8 lg:px-0">
       <h2 className="text-center text-4xl sm:text-[54px]">Reviews e Comentários</h2>
       {reviews && reviews.length > 0 && <div className="mt-8 text-center"><p className="text-6xl sm:text-[76px]">{average.toFixed(2)}</p><Stars value={average} size={48} /><p className="mt-1 text-sm text-white/70">{reviews.length} {reviews.length === 1 ? 'avaliação' : 'avaliações'}</p></div>}
+      {authenticated && <BotaoAdicionarReview />}
       <div className="mx-auto mt-12 flex w-full max-w-[930px] flex-col gap-[45px]">
         {data === null && !error && <p className="py-12 text-center">Carregando avaliações...</p>}
         {error && <p role="alert" className="py-12 text-center">Não foi possível carregar as avaliações desta loja.</p>}
