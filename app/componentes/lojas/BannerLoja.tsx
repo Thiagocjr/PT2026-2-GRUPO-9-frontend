@@ -13,15 +13,16 @@ type Props = {
   store: StoreVisualData;
   isOwner: boolean;
   showDetails?: boolean;
+  onAddProduct?: () => void;
 };
 
-export default function BannerLoja({ store, isOwner, showDetails = false }: Props) {
+export default function BannerLoja({ store, isOwner, showDetails = false, onAddProduct }: Props) {
   return (
     <section
       className="relative flex h-[360px] items-center justify-center overflow-hidden bg-[#171717] bg-cover bg-center sm:h-[440px] lg:h-[539px]"
       style={store.bannerUrl ? { backgroundImage: `linear-gradient(rgba(0,0,0,.48),rgba(0,0,0,.48)),url("${store.bannerUrl}")` } : undefined}
     >
-      {isOwner && <ControlesProprietario />}
+      {isOwner && <ControlesProprietario onAddProduct={onAddProduct} />}
       <div className="flex flex-col items-center px-5 text-center text-[#f6f3e4]">
         {showDetails && store.logoUrl ? (
           <Image src={store.logoUrl} alt={store.name} width={552} height={180} unoptimized className="max-h-[180px] w-auto max-w-[min(80vw,552px)] object-contain" />

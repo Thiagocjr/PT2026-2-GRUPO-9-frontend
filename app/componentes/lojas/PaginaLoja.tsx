@@ -14,6 +14,7 @@ import { listarProdutosDaLoja, obterLoja } from '@/src/services/lojasService';
 import { useSessaoLoja } from '@/src/hooks/useSessaoLoja';
 import type { AvaliacaoLoja, RespostaAvaliacoesLoja } from '@/src/types/avaliacoes';
 import type { LojaPublica, ProdutoLoja } from '@/src/types/loja';
+import ModalAdicionarProduto from '../produtos/ModalAdicionarProduto';
 
 const PAGE_SIZE = 15;
 const leagueSpartan = League_Spartan({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
@@ -28,6 +29,7 @@ export default function PaginaLoja({ storeId }: { storeId: number }) {
   const [productsErrorId, setProductsErrorId] = useState<number | null>(null);
   const [ratingsErrorId, setRatingsErrorId] = useState<number | null>(null);
   const [pageState, setPageState] = useState({ storeId: 0, page: 1 });
+  const [modalAdicionarAberto, setModalAdicionarAberto] = useState(false);
   const { authenticated, isOwner } = useSessaoLoja(storeResult?.storeId === storeId ? storeResult.data.ownerId : undefined);
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export default function PaginaLoja({ storeId }: { storeId: number }) {
   return (
     <main className={`${leagueSpartan.className} min-h-screen bg-black text-white`}>
       <Header variant={authenticated ? 'authenticated' : 'guest'} />
-      {store ? <BannerLoja store={store} isOwner={isOwner} showDetails /> : (
+      {store ? <BannerLoja store={store} isOwner={isOwner} showDetails onAddProduct={() => setModalAdicionarAberto(true)} /> : (
         <section className="grid h-[360px] place-items-center bg-[#171717] text-white sm:h-[440px] lg:h-[539px]">
           {storeError ? <p role="alert">Não foi possível carregar esta loja.</p> : <p>Carregando loja...</p>}
         </section>
@@ -125,6 +127,7 @@ export default function PaginaLoja({ storeId }: { storeId: number }) {
           ) : <p className="py-12 text-center">Esta loja ainda não possui produtos.</p>}
         </div>
       </section>
+      <ModalAdicionarProduto open={modalAdicionarAberto} onClose={() => setModalAdicionarAberto(false)} />
     </main>
   );
 }
