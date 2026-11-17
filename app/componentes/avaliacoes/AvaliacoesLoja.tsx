@@ -10,12 +10,14 @@ import BannerLoja from '../lojas/BannerLoja';
 import CardAvaliacao from './CardAvaliacao';
 import ResumoAvaliacoes from './ResumoAvaliacoes';
 import { useSessaoLoja } from '@/src/hooks/useSessaoLoja';
+import ModalAdicionarProduto from '../produtos/ModalAdicionarProduto';
 
 const leagueSpartan = League_Spartan({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'] });
 
 export default function AvaliacoesLoja({ storeId }: { storeId: number }) {
   const [result, setResult] = useState<{ storeId: number; data: RespostaAvaliacoesLoja } | null>(null);
   const [failedStoreId, setFailedStoreId] = useState<number | null>(null);
+  const [modalAdicionarAberto, setModalAdicionarAberto] = useState(false);
   useEffect(() => {
     let active = true;
     listarAvaliacoesLoja(storeId).then((data) => { if (active) setResult({ storeId, data }); }).catch(() => { if (active) setFailedStoreId(storeId); });
@@ -29,7 +31,7 @@ export default function AvaliacoesLoja({ storeId }: { storeId: number }) {
   const average = reviews?.length ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : 0;
   return <main className={`${leagueSpartan.className} min-h-screen bg-black text-white`}>
     <Header variant={authenticated ? 'authenticated' : 'guest'} />
-    {store ? <BannerLoja store={store} isOwner={isOwner} /> : <section className="h-[539px] bg-[#171717]" />}
+    {store ? <BannerLoja store={store} isOwner={isOwner} onAddProduct={() => setModalAdicionarAberto(true)} /> : <section className="h-[539px] bg-[#171717]" />}
     <section className="mx-auto min-h-[1845px] max-w-[1440px] px-5 pb-20 pt-12 sm:px-8 lg:px-0">
       <h2 className="text-center text-4xl sm:text-[54px]">Reviews e Comentários</h2>
       {reviews && reviews.length > 0 && <ResumoAvaliacoes average={average} count={reviews.length} />}
@@ -41,5 +43,6 @@ export default function AvaliacoesLoja({ storeId }: { storeId: number }) {
         {reviews?.map((review) => <CardAvaliacao key={review.id} review={review} />)}
       </div>
     </section>
+    <ModalAdicionarProduto open={modalAdicionarAberto} onClose={() => setModalAdicionarAberto(false)} />
   </main>;
 }

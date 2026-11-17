@@ -22,8 +22,8 @@ export default function ControlesProprietario({ onEditStore, onAddProduct }: Pro
         type="button"
         disabled={!onAddProduct}
         onClick={onAddProduct}
-        aria-label="Adicionar produto (funcionalidade futura)"
-        title="Adicionar produto — funcionalidade futura"
+        aria-label={onAddProduct ? 'Adicionar produto' : 'Adicionar produto (funcionalidade futura)'}
+        title={onAddProduct ? 'Adicionar produto' : 'Adicionar produto — funcionalidade futura'}
         className="h-[45px] w-[45px] disabled:cursor-not-allowed disabled:opacity-70"
       >
         <Image src="/avaliacoes/add-product.svg" alt="" width={45} height={45} />
